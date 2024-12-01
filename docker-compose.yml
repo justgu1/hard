@@ -4,9 +4,9 @@ services:
     build:
       args:
         USER: ${USER}
-        UID: ${UID}
-        GID: ${GID}
-        GROUP: ${GROUP}
+        UID: ${USER_ID}
+        GROUP: ${USER}
+        GID: ${USER_ID}
       context: .
       dockerfile: ./docker/nginx/Dockerfile
     ports:
@@ -29,9 +29,9 @@ services:
     build:
       args:
         USER: ${USER}
-        UID: ${UID}
-        GID: ${GID}
-        GROUP: ${GROUP}
+        UID: ${USER_ID}
+        GROUP: ${USER}
+        GID: ${USER_ID}
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
     volumes:
