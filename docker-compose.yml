@@ -6,7 +6,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./www:/var/www/
+      - ./www:/var/www/html
     depends_on:
       - hard_php_fpm
     networks:
@@ -18,7 +18,7 @@ services:
     container_name: hard_php_fpm
     volumes:
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
-      - ./www:/var/www/
+      - ./www:/var/www/html
     networks:
       - hard
 
