@@ -24,15 +24,16 @@ services:
       - hard
 
   app:
+    image: app
+    container_name: app
     build:
       args:
-        user: ${USER}
-        uid: ${UID}
-        gid: ${GID}
-        group: ${GROUP}
+        USER: ${USER}
+        UID: ${UID}
+        GID: ${GID}
+        GROUP: ${GROUP}
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
-    container_name: app
     volumes:
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
       - "${WWW_PATH}:/var/www/html"
