@@ -50,7 +50,7 @@ services:
     networks:
       - hard
     command: |
-      bash -c "sleep 30; ls | parallel --line-buffer 'php {}/artisan horizon'"
+      bash -c "sleep 5; ls | parallel --line-buffer 'php {}/artisan "${QUEUE_COMMAND}" >> /var/www/html/{}/storage/logs/queue-$(date +%F).log'"
 
   scheduler:
     image: app
@@ -66,7 +66,7 @@ services:
       - hard
     command: |
       bash -c "ls | parallel --line-buffer '
-      sleep 30
+      sleep 5
       while [ true ]
       do
         php {}/artisan schedule:run --verbose --no-interaction &
