@@ -14,14 +14,28 @@ services:
   hard_php_fpm:
     build:
       context: .
-      dockerfile: ./php-fpm/Dockerfile
-    container_name: hard_php_fpm
+  db:
+    image: mariadb
+    container_name: db
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - "db_data:/var/lib/mysql"
+    environment:
+      MARIADB_ROOT_PASSWORD: password
+    networks:
+      - hard
+
     volumes:
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
       - ./www:/var/www/html
     networks:
       - hard
 
+volumes:
+  db_data:
+    driver: local
 networks:
   hard:
     driver: bridge
