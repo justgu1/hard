@@ -15,9 +15,27 @@ services:
       - mailpit
     networks:
       - hard
-  hard_php_fpm:
+
+  app:
     build:
+      args:
+        user: ${USER}
+        uid: ${UID}
+        gid: ${GID}
+        group: ${GROUP}
       context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    container_name: app
+    volumes:
+      - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - "${WWW_PATH}:/var/www/html"
+    depends_on:
+      - db
+      - redis
+      - minio
+      - mailpit
+    networks:
+      - hard
   db:
     image: mariadb
     container_name: db
