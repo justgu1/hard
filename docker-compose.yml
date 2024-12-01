@@ -51,6 +51,28 @@ services:
       - hard
     command: |
       bash -c "sleep 30; ls | parallel --line-buffer 'php {}/artisan horizon'"
+
+  scheduler:
+    image: app
+    container_name: scheduler
+    volumes:
+      - "${WWW_PATH}:/var/www/html"
+    depends_on:
+      - db
+      - redis
+      - minio
+      - mailpit
+    networks:
+      - hard
+    command: |
+      bash -c "ls | parallel --line-buffer '
+      sleep 30
+      while [ true ]
+      do
+        php {}/artisan schedule:run --verbose --no-interaction &
+        sleep 60
+      done'"
+
   db:
     image: mariadb
     container_name: db
