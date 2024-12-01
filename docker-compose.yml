@@ -1,14 +1,18 @@
 services:
-  hard_nginx:
+  nginx:
     image: nginx:alpine3.20
-    container_name: hard_nginx
+    container_name: nginx
     ports:
       - "80:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - ./www:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - "${WWW_PATH}:/var/www/html"
     depends_on:
-      - hard_php_fpm
+      - app
+      - db
+      - redis
+      - minio
+      - mailpit
     networks:
       - hard
   hard_php_fpm:
