@@ -38,6 +38,22 @@ services:
     networks:
       - hard
 
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    restart: unless-stopped
+    volumes:
+      - "minio_data:/data"
+    environment:
+      - MINIO_ROOT_USER=root
+      - MINIO_ROOT_PASSWORD=password
+    command: server --console-address ":9001" /data
+    networks:
+      - hard
+
     volumes:
       - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
       - ./www:/var/www/html
@@ -48,6 +64,8 @@ volumes:
   db_data:
     driver: local
   redis_data:
+    driver: local
+  minio_data:
     driver: local
 networks:
   hard:
