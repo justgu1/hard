@@ -23,20 +23,19 @@ fi
 function display_help {
     echo "Laravel Hard"
     echo
-    echo "${YELLOW}Usage:${NC}" >&2
-    echo "  hard [project] COMMAND [arguments]"
-    echo
     echo "${YELLOW}docker-compose Commands:${NC}"
-    echo "  ${GREEN}hard up${NC}        Start the application"
-    echo "  ${GREEN}hard up -d${NC}     Start the application in the background"
+    echo "  ${GREEN}hard up${NC}        Start the environment"
+    echo "  ${GREEN}hard up -d${NC}     Start the environment in the background"
+    echo "  ${GREEN}hard down${NC}      Stop the environment"
+    echo "  ${GREEN}hard restart${NC}   Restart the environment"
     echo "  ${GREEN}hard ps${NC}        Display the status of all containers"
     echo
     echo "${YELLOW}Container CLI:${NC}"
-    echo "  ${GREEN}hard bash${NC}        Start a shell session within the application container"
+    echo "  ${GREEN}hard bash${NC}        Start a shell session within the app container"
     echo
     echo "${YELLOW}Artisan Commands:${NC}"
-    echo "  ${GREEN}hard [project] artisan ...${NC}          Run an Artisan command"
-    echo "  ${GREEN}hard [project] artisan queue:work${NC}"
+    echo "  ${GREEN}hard [project] php artisan ...${NC}          Run an Artisan command"
+    echo "  ${GREEN}hard [project] php artisan queue:work${NC}"
     echo
     echo "${YELLOW}PHP Commands:${NC}"
     echo "  ${GREEN}hard [project] php ...${NC}   Run a snippet of PHP code"
@@ -59,7 +58,8 @@ function display_help {
     echo "  ${GREEN}hard [project] yarn ...${NC}        Run a Yarn command"
     echo "  ${GREEN}hard [project] yarn run prod${NC}"
     echo
-    exit 1
+    exit 0
+}
 
 if [ ! -f $HARD_PATH/docker-compose.yml ]; then
     echo "ERROR: Couldn't find a 'docker-compose.yml' file in the current directory."
@@ -104,4 +104,4 @@ if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
 fi
 
 display_help
-exit 1
+exit 0
