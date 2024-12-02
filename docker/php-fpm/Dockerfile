@@ -67,4 +67,4 @@ USER $USER
 
 # Install Laravel Installer
 RUN composer global require laravel/installer
-RUN echo 'export PATH="$HOME/.composer/vendor/bin:$PATH"' >>~/.bashrc
+RUN echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >>~/.bashrc
