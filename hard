@@ -8,6 +8,8 @@ export USER=$(whoami)
 export USER_ID=$(id -u)
 export GROUP=$(id -g -n)
 export GROUP_ID=(id -g)
+
+# todo: add support for custom paths
 HARD_PATH="/home/${USER}/code/hard"
 
 . $HARD_PATH/.env
