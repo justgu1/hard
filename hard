@@ -2,6 +2,12 @@
 # this script is inspired by Laravel Sail
 # https://github.com/laravel/sail/blob/1.x/bin/sail
 
+# Set user and group to the same values as the host user
+# This way you can avoid permission issues with files created inside the container
+export USER=$(whoami)
+export USER_ID=$(id -u)
+export GROUP=$(id -g -n)
+export GROUP_ID=(id -g)
 HARD_PATH="/home/${USER}/code/hard"
 
 . $HARD_PATH/.env
