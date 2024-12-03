@@ -12,6 +12,12 @@ export GROUP_ID=(id -g)
 # todo: add support for custom paths
 HARD_PATH="/home/${USER}/code/hard"
 
+if docker compose &> /dev/null; then
+    DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml)
+else
+    DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml)
+fi
+
 . $HARD_PATH/.env
 
 # Determine if stdout is a terminal...
@@ -85,31 +91,38 @@ if [ ! -d $WWW_PATH ]; then
 fi
 
 case "$1" in
-    up|down|build|ps) YES=1;;
-    *)                YES=0;;
+    up|down|build|ps|restart) YES=1;;
+    *)                        YES=0;;
 esac
 
 if [ $YES = 1 ]; then
-    docker compose -f "$HARD_PATH/docker-compose.yml" "$@"
+    "${DOCKER_COMPOSE[@]}" "$@"
     exit 0
 fi
 
 case "$1" in
-    bash|composer) YES=1;;
-    *)             YES=0;;
+    bash|laravel) YES=1;;
+    *)            YES=0;;
 esac
 
 if [ $YES = 1 ]; then
-    docker compose -f "$HARD_PATH/docker-compose.yml" exec app "$@"
+    "${DOCKER_COMPOSE[@]}" exec app "$@"
     exit 0
 fi
 
 if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
     PROJECT="$1"
     shift 1
-    docker compose -f "$HARD_PATH/docker-compose.yml" exec -it --workdir "/var/www/html/$PROJECT" app "$@"
-    exit 0
+
+    case "$1" in
+        php|composer|npm|npx|yarn) YES=1;;
+        *)            YES=0;;
+    esac
+
+    if [ $YES = 1 ]; then
+        "${DOCKER_COMPOSE[@]}" exec -it --workdir "/var/www/html/$PROJECT" app "$@"
+        exit 0
+    fi
 fi
 
 display_help
-exit 0
