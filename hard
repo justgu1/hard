@@ -99,6 +99,7 @@ else
     display_help
 fi
 
+
 case "$1" in
     up|down|build|ps|restart) YES=1;;
     *)                        YES=0;;
@@ -117,6 +118,20 @@ esac
 if [ $YES = 1 ]; then
     "${DOCKER_COMPOSE[@]}" exec app "$@"
     exit 0
+fi
+
+if [ "$1" != "" ] && [ -d $WWW_PATH/$(basename $PWD) ]; then
+    PROJECT="$(basename $PWD)"
+
+    case "$1" in
+        php|composer|npm|npx|yarn) YES=1;;
+        *)            YES=0;;
+    esac
+
+    if [ $YES = 1 ]; then
+        "${DOCKER_COMPOSE[@]}" exec -it --workdir "/var/www/html/$PROJECT" app "$@"
+        exit 0
+    fi
 fi
 
 if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
