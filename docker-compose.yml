@@ -58,7 +58,7 @@ services:
     networks:
       - hard
     command: |
-      bash -c "sleep 5; echo */ | parallel --line-buffer 'php {}artisan "${QUEUE_COMMAND}" >> /var/www/html/{}storage/logs/queue-$(date +%F).log'"
+      bash -c "sleep 5; ls | parallel --line-buffer 'php {}/artisan "${QUEUE_COMMAND}" >> /var/www/html/{}/storage/logs/queue-$(date +%F).log'"
 
   scheduler:
     image: app
@@ -73,11 +73,11 @@ services:
     networks:
       - hard
     command: |
-      bash -c "echo */ | parallel --line-buffer '
+      bash -c "ls | parallel --line-buffer '
       sleep 5
       while [ true ]
       do
-        php {}artisan schedule:run --verbose --no-interaction &
+        php {}/artisan schedule:run --verbose --no-interaction &
         sleep 60
       done'"
 
