@@ -76,17 +76,19 @@ function display_help {
 }
 
 if [ ! -f $HARD_PATH/docker-compose.yml ]; then
-    echo "ERROR: Couldn't find a 'docker-compose.yml' file in the current directory."
-    display_help
+    echo "ERROR: Couldn't find a 'docker-compose.yml' file in the hard directory."
+    exit 1
 fi
 
 if [ ! -f $HARD_PATH/.env ]; then
-    echo "ERROR: Couldn't find a '.env' file in the current directory."
-    display_help
+    echo "ERROR: Couldn't find '.env' in the hard directory."
+    exit 1
 fi
 
 if [ ! -d $WWW_PATH ]; then
-    echo "ERROR: Couldn't find a 'www' directory in the current directory."
+    echo "ERROR: Invalid 'WWW_PATH' in the hard '.env' file."
+    exit 1
+fi
     display_help
 fi
 
