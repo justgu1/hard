@@ -112,11 +112,3 @@ This will display the full list of commands you can use to manage your Laravel p
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-```
-
-```
-
-```
-
-```
