@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y \
     wget \
     unzip \
     parallel \
+    mariadb-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd intl opcache pdo pdo_mysql xml xsl pcntl \
     && pecl install redis \
@@ -67,4 +68,4 @@ USER $USER
 
 # Install Laravel Installer
 RUN composer global require laravel/installer
-RUN echo 'export PATH="$HOME/.config/composer/vendor/bin:$PATH"' >>~/.bashrc
+ENV PATH="$PATH:/home/${USER}/.config/composer/vendor/bin"
