@@ -43,34 +43,31 @@ function display_help {
     echo "  ${GREEN}hard down${NC}      Stop the environment"
     echo "  ${GREEN}hard restart${NC}   Restart the environment"
     echo "  ${GREEN}hard ps${NC}        Display the status of all containers"
+    echo "  ${GREEN}hard bash${NC}      Start a shell session within the app container"
     echo
-    echo "${YELLOW}Container CLI:${NC}"
-    echo "  ${GREEN}hard bash${NC}        Start a shell session within the app container"
-    echo
-    echo "${YELLOW}Artisan Commands:${NC}"
-    echo "  ${GREEN}hard [project] php artisan ...${NC}          Run an Artisan command"
-    echo "  ${GREEN}hard [project] php artisan queue:work${NC}"
+    echo "${YELLOW}Laravel Commands:${NC}"
+    echo "  ${GREEN}hard laravel ...${NC} Run the Laravel command"
+    echo "  ${GREEN}hard laravel new awesome-project${NC}"
     echo
     echo "${YELLOW}PHP Commands:${NC}"
-    echo "  ${GREEN}hard [project] php ...${NC}   Run a snippet of PHP code"
-    echo "  ${GREEN}hard [project] php -v${NC}"
+    echo "  ${GREEN}hard [project] php ...${NC} Run a snippet of PHP code"
+    echo "  ${GREEN}hard awesome-project php artisan migrate${NC}"
     echo
     echo "${YELLOW}Composer Commands:${NC}"
-    echo "  ${GREEN}hard [project] composer ...${NC}                       Run a Composer command"
-    echo "  ${GREEN}hard [project] composer require laravel/sanctum${NC}"
+    echo "  ${GREEN}hard [project] composer ...${NC} Run a Composer command"
+    echo "  ${GREEN}hard awesome-project composer require laravel/sanctum${NC}"
     echo
     echo "${YELLOW}Node Commands:${NC}"
-    echo "  ${GREEN}hard [project] node ...${NC}         Run a Node command"
-    echo "  ${GREEN}hard [project] node --version${NC}"
+    echo "  ${GREEN}hard [project] node ...${NC} Run a Node command"
+    echo "  ${GREEN}hard awesome-project node --version${NC}"
     echo
     echo "${YELLOW}NPM Commands:${NC}"
-    echo "  ${GREEN}hard [project] npm ...${NC}        Run a npm command"
-    echo "  ${GREEN}hard [project] npx${NC}            Run a npx command"
-    echo "  ${GREEN}hard [project] npm run prod${NC}"
+    echo "  ${GREEN}hard [project] npm ...${NC} Run a npm command"
+    echo "  ${GREEN}hard awesome-project npm run prod${NC}"
     echo
     echo "${YELLOW}Yarn Commands:${NC}"
-    echo "  ${GREEN}hard [project] yarn ...${NC}        Run a Yarn command"
-    echo "  ${GREEN}hard [project] yarn run prod${NC}"
+    echo "  ${GREEN}hard [project] yarn ...${NC} Run a Yarn command"
+    echo "  ${GREEN}hard awesome-project yarn prod${NC}"
     echo
     exit 0
 }
