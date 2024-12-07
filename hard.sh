@@ -38,7 +38,7 @@ fi
 # defalut is mysql
 if [ "$DB_CONNECTION" == "mysql" ]; then
     DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mysql.yml)
-else if [ "$DB_CONNECTION" == "pgsql" ]; then
+elif [ "$DB_CONNECTION" == "pgsql" ]; then
     DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.pgsql.yml)
 else
     echo "ERROR: Invalid 'DB_CONNECTION' in the hard '.env' file."
@@ -48,7 +48,7 @@ fi
 # Build the docker compose command based on the docker compose version
 if docker compose &> /dev/null; then
     DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
-else if docker-compose &> /dev/null; then
+elif docker-compose &> /dev/null; then
     DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
 else
     echo "ERROR: Couldn't find 'docker-compose' or 'docker compose' command."
