@@ -9,15 +9,27 @@ export USER_ID=$(id -u)
 export GROUP=$(id -g -n)
 export GROUP_ID=(id -g)
 
+# Set the path to the hard directory
 HARD_PATH="/home/${USER}/.hard"
 
-if docker compose &> /dev/null; then
-    DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml)
+# Load the .env file
+. $HARD_PATH/.env
+
+# pick the database docker compose based 
+# on the selected database in the .env file
+
+if [ "$DB_CONNECTION" == "mysql" ]; then
+    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mysql.yml)
 else
-    DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml)
+    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose-pgsql.yml)
 fi
 
-. $HARD_PATH/.env
+if docker compose &> /dev/null; then
+    DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
+else
+    DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
+fi
+
 
 # Determine if stdout is a terminal...
 if test -t 1; then
