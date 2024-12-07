@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# this script is inspired by Laravel Sail
+# This script is inspired by Laravel Sail
 # https://github.com/laravel/sail/blob/1.x/bin/sail
 
 # Set user and group to the same values as the host user
-# This way you can avoid permission issues with files created inside the container
+# this way you can avoid permission issues with files created inside the container
 export USER=$(whoami)
 export USER_ID=$(id -u)
 export GROUP=$(id -g -n)
@@ -12,22 +12,47 @@ export GROUP_ID=(id -g)
 # Set the path to the hard directory
 HARD_PATH="/home/${USER}/.hard"
 
+# Check if docker-compose file exists
+if [ ! -f $HARD_PATH/docker-compose.yml ]; then
+    echo "ERROR: Couldn't find a 'docker-compose.yml' file in the hard directory."
+    exit 1
+fi
+
+# Check if .env file exists
+if [ ! -f $HARD_PATH/.env ]; then
+    echo "ERROR: Couldn't find '.env' in the hard directory."
+    exit 1
+fi
+
+# Check if WWW_PATH is a valid directory
+if [ ! -d $WWW_PATH ]; then
+    echo "ERROR: Invalid 'WWW_PATH' in the hard '.env' file."
+    exit 1
+fi
+
 # Load the .env file
 . $HARD_PATH/.env
 
-# pick the database docker compose based 
-# on the selected database in the .env file
-
+# Pick the database docker compose based on the selected database
+# in the .env file and set the DOCKER_COMPOSE_DB variable
+# defalut is mysql
 if [ "$DB_CONNECTION" == "mysql" ]; then
     DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mysql.yml)
+else if [ "$DB_CONNECTION" == "pgsql" ]; then
+    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.pgsql.yml)
 else
-    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose-pgsql.yml)
+    echo "ERROR: Invalid 'DB_CONNECTION' in the hard '.env' file."
+    exit 1
 fi
 
+# Build the docker compose command based on the docker compose version
 if docker compose &> /dev/null; then
     DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
-else
+else if docker-compose &> /dev/null; then
     DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
+else
+    echo "ERROR: Couldn't find 'docker-compose' or 'docker compose' command."
+    exit 1
 fi
 
 
@@ -83,21 +108,6 @@ function display_help {
     exit 0
 }
 
-if [ ! -f $HARD_PATH/docker-compose.yml ]; then
-    echo "ERROR: Couldn't find a 'docker-compose.yml' file in the hard directory."
-    exit 1
-fi
-
-if [ ! -f $HARD_PATH/.env ]; then
-    echo "ERROR: Couldn't find '.env' in the hard directory."
-    exit 1
-fi
-
-if [ ! -d $WWW_PATH ]; then
-    echo "ERROR: Invalid 'WWW_PATH' in the hard '.env' file."
-    exit 1
-fi
-
 # Proxy the "help" command...
 if [ $# -gt 0 ]; then
     if [ "$1" == "help" ] || [ "$1" == "-h" ] || [ "$1" == "-help" ] || [ "$1" == "--help" ]; then
@@ -107,7 +117,7 @@ else
     display_help
 fi
 
-
+# Check if the command is a docker compose command...
 case "$1" in
     up|down|build|ps|restart) YES=1;;
     *)                        YES=0;;
@@ -118,6 +128,7 @@ if [ $YES = 1 ]; then
     exit 0
 fi
 
+# Check if the command going to run in the app container...
 case "$1" in
     bash|laravel) YES=1;;
     *)            YES=0;;
@@ -128,9 +139,14 @@ if [ $YES = 1 ]; then
     exit 0
 fi
 
+# Check if the command going to run in the app container with a project...
+# case when the project is the current directory, there is no need to pass the project name
+# as an argument. In this case, the project name is the current directory name.
+# Example: hard php artisan migrate
 if [ "$1" != "" ] && [ -d $WWW_PATH/$(basename $PWD) ]; then
     PROJECT="$(basename $PWD)"
 
+    # Commands thar are currently supported
     case "$1" in
         php|composer|npm|npx|yarn) YES=1;;
         *)            YES=0;;
@@ -142,10 +158,14 @@ if [ "$1" != "" ] && [ -d $WWW_PATH/$(basename $PWD) ]; then
     fi
 fi
 
+# Case when the project is not the current directory,
+# the project name must be passed as an argument.
+# Example: hard awesome-project php artisan migrate
 if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
     PROJECT="$1"
     shift 1
 
+    # Commands thar are currently supported
     case "$1" in
         php|composer|npm|npx|yarn) YES=1;;
         *)            YES=0;;
@@ -157,4 +177,5 @@ if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
     fi
 fi
 
+# Display help if no command is found...
 display_help
