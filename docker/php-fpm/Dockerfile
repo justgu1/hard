@@ -34,8 +34,10 @@ RUN apt-get update && apt-get install -y \
     unzip \
     parallel \
     mariadb-client \
+    libpq-dev \
+    postgresql-client \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd intl opcache pdo pdo_mysql xml xsl pcntl \
+    && docker-php-ext-install gd intl opcache pdo pdo_mysql pdo_pgsql xml xsl pcntl \
     && pecl install redis \
     && docker-php-ext-enable redis pcntl
 
