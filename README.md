@@ -42,15 +42,26 @@ bash <(wget -q -O - https://raw.githubusercontent.com/clebsonsh/hard/refs/heads/
 `PHP Hard` offers configuration options with reasonable defaults, easily customizable to fit your needs. Modify the settings in `~/.hard/.env` to suit your preferences.
 
 - `WWW_PATH`: The directory where your projects are located. Default: `~/hard`
+
+  - Any project you create or clone in this directory can be accessed on `*.localhost`.
+  - Example: After running `hard laravel new awesome-project`, simply open [http://awesome-project.localhost](http://awesome-project.localhost) and it’ll be ready to go!
+
 - `QUEUE_COMMAND`: Command to run your application queues. Default: `queue:work`
+
   - Can be changed to `queue:work --tries=3`, for example.
   - If you prefer to run Horizon, you can change it to `horizon`.
+
 - `DB_CONNECTION`: The type of database to use. Default: `mysql`
+
   - Can be changed to `pgsql` if you prefer to use PostgreSQL.
   - Currently, `Hard` supports both MySQL and PostgreSQL.
+
 - `DB_USERNAME`: Database user. Default: `root`
+
 - `DB_PASSWORD`: Database password. Default: `password`
+
 - `AWS_ACCESS_KEY_ID`: Minio user. Default: `root`
+
 - `AWS_SECRET_ACCESS_KEY`: Minio password. Default: `password`
 
 ---
