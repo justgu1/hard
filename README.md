@@ -37,7 +37,7 @@ bash <(wget -q -O - https://raw.githubusercontent.com/clebsonsh/hard/refs/heads/
 
 ## Configuration
 
-`PHP Hard` offers a few configuration options, all with reasonable defaults:
+`PHP Hard` offers configuration options with reasonable defaults, easily customizable to fit your needs. Modify the settings in `~/.hard/.env` to suit your preferences.
 
 - `WWW_PATH`: The directory where your projects are located. Default: `~/hard`
 - `QUEUE_COMMAND`: Command to run your application queues. Default: `queue:work`
