@@ -2,6 +2,7 @@
 
 > **Work in Progress**  
 > This project is still under development. Some features may be incomplete or subject to change.
+> Currently, `Hard` is supported on Linux OS. For Windows users, it can be run using WSL (Windows Subsystem for Linux).
 
 ## Overview
 
