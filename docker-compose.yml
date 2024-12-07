@@ -127,7 +127,9 @@ services:
       - hard
 
 volumes:
-  db_data:
+  mysql_data:
+    driver: local
+  pgsql_data:
     driver: local
   redis_data:
     driver: local
