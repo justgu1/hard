@@ -1,13 +1,13 @@
-# Laravel Hard - Docker Environment
+# PHP Hard - Docker Environment
 
 > **Work in Progress**  
 > This project is still under development. Some features may be incomplete or subject to change
 
 ## Overview
 
-`Laravel Hard` is a Docker-based environment designed to streamline the development and management of Laravel projects. It comes with pre-configured services like PHP, Composer, Node.js, Yarn, and more, enabling you to easily manage your application and its dependencies in a containerized environment.
+`PHP Hard` is a Docker-based environment designed to streamline the development and management of Laravel projects. It comes with pre-configured services like PHP, Composer, Node.js, Yarn, and more, enabling you to easily manage your application and its dependencies in a containerized environment.
 
-This README provides an overview of how to use `Laravel Hard` with various commands for Docker, Laravel, Artisan, PHP, Composer, Node.js, NPM, and Yarn.
+This README provides an overview of how to use `PHP Hard` with various commands for Docker, Laravel, Artisan, PHP, Composer, Node.js, NPM, and Yarn.
 
 ## Table of Contents
 
