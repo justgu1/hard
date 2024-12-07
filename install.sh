@@ -3,20 +3,20 @@
 echo "Installing Hard..."
 
 # check if git is installed
-if ! command -v git; then
+if ! command -v git > /dev/null; then
     echo "Git is not installed. Please, install git and try again."
     exit 1
 fi
 
 # check if docker is installed
-if ! command -v docker; then
+if ! command -v docker > /dev/null; then
     echo "Docker is not installed. Please, install docker and try again."
     exit 1
 fi
 
 # check if docker-compose or docker compose is installed
-if ! command -v docker-compose; then
-    if ! command -v docker compose; then
+if ! command -v docker-compose > /dev/null; then
+    if ! command -v docker compose > /dev/null; then
         echo "Docker Compose is not installed. Please, install docker-compose and try again."
         exit 1
     fi
@@ -35,6 +35,13 @@ git clone https://github.com/clebsonsh/hard.git $HARD_PATH
 
 # copy .env.example to .env
 cp $HARD_PATH/.env.example $HARD_PATH/.env
+
+. $HARD_PATH/.env
+
+# check if WWW_PATH exists and create it
+if [ ! -d $WWW_PATH ]; then
+    mkdir -p $WWW_PATH
+fi
 
 # check if .bashrc exists and have ~/.local/bin in the PATH
 if [ -f ~/.bashrc ]; then
