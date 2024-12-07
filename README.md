@@ -28,7 +28,9 @@ This README provides an overview of how to use `PHP Hard` with various commands 
 
 To get started, you’ll need Docker and Docker Compose installed on your machine. If you haven't already, please follow the installation guides for [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/).
 
-- TODO
+```bash
+bash <(wget -q -O - https://raw.githubusercontent.com/clebsonsh/hard/refs/heads/main/install.sh)
+```
 
 ## Docker Commands
 
