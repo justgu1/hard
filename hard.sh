@@ -6,8 +6,6 @@
 # this way you can avoid permission issues with files created inside the container
 export USER=$(whoami)
 export USER_ID=$(id -u)
-export GROUP=$(id -g -n)
-export GROUP_ID=(id -g)
 
 # Set the path to the hard directory
 HARD_PATH="/home/${USER}/.hard"
