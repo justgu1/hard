@@ -9,8 +9,7 @@ export USER_ID=$(id -u)
 export GROUP=$(id -g -n)
 export GROUP_ID=(id -g)
 
-# todo: add support for custom paths
-HARD_PATH="/home/${USER}/code/hard"
+HARD_PATH="/home/${USER}/.hard"
 
 if docker compose &> /dev/null; then
     DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml)
