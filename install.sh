@@ -85,6 +85,3 @@ chmod +x ~/.local/bin/hard
 
 echo "Hard installed successfully!"
 echo "Please, restart your terminal."
-
-~/.local/bin/hard up -d
-~/.local/bin/hard laravel new test
