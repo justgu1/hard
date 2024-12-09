@@ -41,6 +41,8 @@ RUN apt-get update && apt-get install -y \
     && pecl install redis \
     && docker-php-ext-enable redis pcntl
 
+RUN apt-get install gpg -y
+
 RUN curl https://packages.microsoft.com/config/debian/12/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
 RUN apt-get update \
@@ -50,6 +52,7 @@ RUN apt-get update \
     && pecl install sqlsrv \
     && pecl install pdo_sqlsrv \
     && docker-php-ext-enable sqlsrv pdo_sqlsrv
+
 # Clean up for smaller image size
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
