@@ -36,12 +36,12 @@ RUN apt-get update && apt-get install -y \
     mariadb-client \
     libpq-dev \
     postgresql-client \
+    libzip-dev \
+    gpg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd intl opcache pdo pdo_mysql pdo_pgsql xml xsl pcntl \
+    && docker-php-ext-install gd intl opcache pdo pdo_mysql pdo_pgsql xml xsl pcntl zip \
     && pecl install redis \
-    && docker-php-ext-enable redis pcntl
-
-RUN apt-get install gpg -y
+    && docker-php-ext-enable redis pcntl 
 
 RUN curl https://packages.microsoft.com/config/debian/12/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
 RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
