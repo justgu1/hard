@@ -27,14 +27,18 @@ HARD_PATH="/home/${USER}/.hard"
 
 # check if HARD_PATH exists
 if [ -d $HARD_PATH ]; then
-  rm -rf $HARD_PATH
+  # pull hard repository
+  cd $HARD_PATH; git pull
+else
+  # clone hard repository
+  git clone https://github.com/clebsonsh/hard.git $HARD_PATH
 fi
 
-# clone hard repository
-git clone https://github.com/clebsonsh/hard.git $HARD_PATH
 
-# copy .env.example to .env
-cp $HARD_PATH/.env.example $HARD_PATH/.env
+# copy .env.example to .env if .env does not exists
+if [ -f $HARD_PATH/.env ]; then
+  cp $HARD_PATH/.env.example $HARD_PATH/.env
+fi
 
 # source .env
 . $HARD_PATH/.env
@@ -78,10 +82,10 @@ if [ -f ~/.local/bin/hard ]; then
 fi
 
 # create a symbolic link to hard.sh
-cp $HARD_PATH/hard.sh ~/.local/bin/hard
+ln -s -f -t ~/.local/bin $HARD_PATH/hard
 
 # give permission
-chmod +x ~/.local/bin/hard
+chmod +x $HARD_PATH/hard
 
 echo "Hard installed successfully!"
 echo "Please, restart your terminal."
