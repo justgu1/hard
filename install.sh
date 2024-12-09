@@ -35,10 +35,8 @@ else
 fi
 
 
-# copy .env.example to .env if .env does not exists
-if [ -f $HARD_PATH/.env ]; then
-  cp $HARD_PATH/.env.example $HARD_PATH/.env
-fi
+# copy .env.example to .env if .env 
+cp -n $HARD_PATH/.env.example $HARD_PATH/.env
 
 # source .env
 . $HARD_PATH/.env
