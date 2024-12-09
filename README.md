@@ -3,7 +3,7 @@
 > **Work in Progress**  
 > This project is still under development. Some features may be incomplete or subject to change.
 
-> Currently, `Hard` is supported on Linux OS. For Windows users, it can be run using WSL (Windows Subsystem for Linux).
+> Currently, `Hard` is only supported on Linux. For Windows users, it can be run using WSL (Windows Subsystem for Linux). Mac support has not been tested (I don't have a Mac to test it).
 
 ## Overview
 
@@ -11,6 +11,7 @@
 
 ## Table of Contents
 
+- [Features](#features)
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Docker Commands](#docker-commands)
@@ -22,6 +23,23 @@
 - [NPM Commands](#npm-commands)
 - [Yarn Commands](#yarn-commands)
 - [Help Command](#help-command)
+
+---
+
+## Features
+
+- **Containerized Environment**: Seamlessly run your Laravel application within Docker.
+- **Auto Generated Domains**: Access your projects via `*.localhost` domains effortlessly after creating or cloning a project inside the hard directory.
+- **PHP 8.3**: Pre-installed PHP 8.3 for your development needs.
+- **Composer**: Efficiently manage PHP dependencies with Composer.
+- **Node.js**: Execute Node.js commands and compile JavaScript assets.
+- **Yarn**: Handle JavaScript dependencies and build assets using Yarn.
+- **NPM**: Utilize NPM commands for managing JavaScript dependencies.
+- **Artisan**: Run Laravel Artisan commands directly within the container.
+- **Queue Management**: Operate queue workers or Horizon within the container.
+- **Database**: Comes with MySQL and PostgreSQL databases; you can choose one in the config.
+- **Minio**: Utilize S3-compatible object storage for local development.
+- **Flexible Configuration**: Easily customize environment settings to match your requirements.
 
 ---
 
