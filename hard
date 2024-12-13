@@ -34,8 +34,8 @@ fi
 # Pick the database docker compose based on the selected database
 # in the .env file and set the DOCKER_COMPOSE_DB variable
 # defalut is mysql
-if [ "$DB_CONNECTION" == "mysql" ]; then
-    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mysql.yml)
+if [ "$DB_CONNECTION" == "mysql" ] || [ "$DB_CONNECTION" == "mariadb" ] ; then
+    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mariadb.yml)
 elif [ "$DB_CONNECTION" == "pgsql" ]; then
     DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.pgsql.yml)
 else

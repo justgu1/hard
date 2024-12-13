@@ -37,7 +37,7 @@
 - **NPM**: Utilize NPM commands for managing JavaScript dependencies.
 - **Artisan**: Run Laravel Artisan commands directly within the container.
 - **Queue Management**: Operate queue workers or Horizon within the container.
-- **Database**: Comes with MySQL and PostgreSQL databases; you can choose one in the config.
+- **Database**: Comes with MariaDB and PostgreSQL databases; you can choose one in the config.
 - **Minio**: Utilize S3-compatible object storage for local development.
 - **Flexible Configuration**: Easily customize environment settings to match your requirements.
 
@@ -69,10 +69,10 @@ bash <(wget -q -O - https://raw.githubusercontent.com/clebsonsh/hard/refs/heads/
   - Can be changed to `queue:work --tries=3`, for example.
   - If you prefer to run Horizon, you can change it to `horizon`.
 
-- `DB_CONNECTION`: The type of database to use. Default: `mysql`
+- `DB_CONNECTION`: The type of database to use. Default: `mariadb`
 
   - Can be changed to `pgsql` if you prefer to use PostgreSQL.
-  - Currently, `Hard` supports both MySQL and PostgreSQL.
+  - Currently, `Hard` supports both MariaDB and PostgreSQL.
 
 - `DB_USERNAME`: Database user. Default: `root`
 
