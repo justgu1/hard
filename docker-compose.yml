@@ -1,6 +1,7 @@
 services:
   nginx:
     container_name: nginx
+    restart: unless-stopped
     build:
       args:
         USER: ${USER}
@@ -26,6 +27,7 @@ services:
   app:
     image: app
     container_name: app
+    restart: unless-stopped
     build:
       args:
         USER: ${USER}
@@ -48,6 +50,7 @@ services:
   queue:
     image: app
     container_name: queue
+    restart: unless-stopped
     volumes:
       - "${WWW_PATH}:/var/www/html"
     depends_on:
@@ -63,6 +66,7 @@ services:
   scheduler:
     image: app
     container_name: scheduler
+    restart: unless-stopped
     volumes:
       - "${WWW_PATH}:/var/www/html"
     depends_on:
