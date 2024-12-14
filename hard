@@ -31,23 +31,11 @@ fi
 # Load the .env file
 . $HARD_PATH/.env
 
-# Pick the database docker compose based on the selected database
-# in the .env file and set the DOCKER_COMPOSE_DB variable
-# defalut is mysql
-if [ "$DB_CONNECTION" == "mysql" ] || [ "$DB_CONNECTION" == "mariadb" ] ; then
-    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.mariadb.yml)
-elif [ "$DB_CONNECTION" == "pgsql" ]; then
-    DOCKER_COMPOSE_DB=(${HARD_PATH}/docker/db/docker-compose.pgsql.yml)
-else
-    echo "ERROR: Invalid 'DB_CONNECTION' in the hard '.env' file."
-    exit 1
-fi
-
 # Build the docker compose command based on the docker compose version
 if docker compose &> /dev/null; then
-    DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
+    DOCKER_COMPOSE=(docker compose -f ${HARD_PATH}/docker-compose.yml)
 elif docker-compose &> /dev/null; then
-    DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml -f ${DOCKER_COMPOSE_DB})
+    DOCKER_COMPOSE=(docker-compose -f ${HARD_PATH}/docker-compose.yml)
 else
     echo "ERROR: Couldn't find 'docker-compose' or 'docker compose' command."
     exit 1

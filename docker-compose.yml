@@ -17,7 +17,7 @@ services:
       - "${WWW_PATH}:/var/www/html"
     depends_on:
       - app
-      - db
+      - mariadb
       - redis
       - minio
       - mailpit
@@ -40,7 +40,7 @@ services:
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
       - "${WWW_PATH}:/var/www/html"
     depends_on:
-      - db
+      - mariadb
       - redis
       - minio
       - mailpit
@@ -54,7 +54,7 @@ services:
     volumes:
       - "${WWW_PATH}:/var/www/html"
     depends_on:
-      - db
+      - mariadb
       - redis
       - minio
       - mailpit
@@ -70,7 +70,7 @@ services:
     volumes:
       - "${WWW_PATH}:/var/www/html"
     depends_on:
-      - db
+      - mariadb
       - redis
       - minio
       - mailpit
@@ -84,6 +84,35 @@ services:
         php {}/artisan schedule:run --verbose --no-interaction &
         sleep 60
       done'"
+
+  mariadb:
+    image: mariadb
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    volumes:
+      - "mariadb_data:/var/lib/mysql"
+    environment:
+      MARIADB_ROOT_PASSWORD: "${DB_PASSWORD}"
+      MARIADB_ROOT_HOST: "%"
+      MARIADB_USER: "${DB_USERNAME}"
+      MARIADB_PASSWORD: "${DB_PASSWORD}"
+      MARIADB_ALLOW_EMPTY_PASSWORD: 1
+    networks:
+      - hard
+    healthcheck:
+      interval: 30s
+      retries: 3
+      test:
+        [
+          "CMD",
+          "healthcheck.sh",
+          "--su-mysql",
+          "--connect",
+          "--innodb_initialized"
+        ]
+      timeout: 30s
 
   redis:
     image: redis
@@ -131,9 +160,7 @@ services:
       - hard
 
 volumes:
-  mysql_data:
-    driver: local
-  pgsql_data:
+  mariadb_data:
     driver: local
   redis_data:
     driver: local
