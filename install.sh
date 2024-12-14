@@ -36,7 +36,10 @@ fi
 
 
 # copy .env.example to .env if .env 
-cp -n $HARD_PATH/.env.example $HARD_PATH/.env
+cp --update=none $HARD_PATH/.env.example $HARD_PATH/.env
+
+sed -i "s/USER=hard/USER=$(echo $USER)/" $HARD_PATH/.env
+sed -i "s/USER_ID=1001/USER_ID=$(echo $UID)/" $HARD_PATH/.env
 
 # source .env
 . $HARD_PATH/.env
