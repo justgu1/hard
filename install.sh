@@ -38,6 +38,7 @@ fi
 # copy .env.example to .env if .env 
 cp --update=none $HARD_PATH/.env.example $HARD_PATH/.env
 
+# replace USER and USER_ID in .env for the current user
 sed -i "s/USER=hard/USER=$(echo $USER)/" $HARD_PATH/.env
 sed -i "s/USER_ID=1001/USER_ID=$(echo $UID)/" $HARD_PATH/.env
 

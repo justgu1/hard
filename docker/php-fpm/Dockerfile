@@ -24,34 +24,18 @@ RUN apt-get update && apt-get install -y \
     libicu-dev \
     libxml2-dev \
     libxslt1-dev \
-    git \
     zip \
     ca-certificates \
     curl \
-    vim \
-    htop \
-    wget \
     unzip \
     parallel \
     mariadb-client \
     libpq-dev \
-    postgresql-client \
     libzip-dev \
-    gpg \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd intl opcache pdo pdo_mysql pdo_pgsql xml xsl pcntl zip \
+    && docker-php-ext-install gd intl opcache pdo pdo_mysql  xml xsl pcntl zip \
     && pecl install redis \
     && docker-php-ext-enable redis pcntl 
-
-RUN curl https://packages.microsoft.com/config/debian/12/prod.list | tee /etc/apt/sources.list.d/mssql-release.list
-RUN curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor -o /usr/share/keyrings/microsoft-prod.gpg
-RUN apt-get update \
-    && ACCEPT_EULA=Y apt-get install -y msodbcsql18 \
-    && ACCEPT_EULA=Y apt-get install -y mssql-tools18 \
-    && apt-get install -y unixodbc-dev \
-    && pecl install sqlsrv \
-    && pecl install pdo_sqlsrv \
-    && docker-php-ext-enable sqlsrv pdo_sqlsrv
 
 # Clean up for smaller image size
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -75,7 +59,7 @@ RUN npm install -g yarn
 RUN yarn config set -- --emoji true
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
 # Run the container as the user
 USER $USER

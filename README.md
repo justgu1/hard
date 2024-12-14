@@ -29,7 +29,7 @@
 ## Features
 
 - **Containerized Environment**: Seamlessly run your Laravel application within Docker.
-- **Auto Generated Domains**: Access your projects via `*.localhost` domains effortlessly after creating or cloning a project inside the hard directory.
+- **Auto-Generated Domains**: Access your projects via `*.localhost` domains effortlessly after creating or cloning a project inside the hard directory.
 - **PHP 8.3**: Pre-installed PHP 8.3 for your development needs.
 - **Composer**: Efficiently manage PHP dependencies with Composer.
 - **Node.js**: Execute Node.js commands and compile JavaScript assets.
@@ -37,7 +37,7 @@
 - **NPM**: Utilize NPM commands for managing JavaScript dependencies.
 - **Artisan**: Run Laravel Artisan commands directly within the container.
 - **Queue Management**: Operate queue workers or Horizon within the container.
-- **Database**: Comes with MariaDB and PostgreSQL databases; you can choose one in the config.
+- **Database**: Comes with MariaDB.
 - **Minio**: Utilize S3-compatible object storage for local development.
 - **Flexible Configuration**: Easily customize environment settings to match your requirements.
 
@@ -60,26 +60,16 @@ bash <(wget -q -O - https://raw.githubusercontent.com/clebsonsh/hard/refs/heads/
 `PHP Hard` offers configuration options with reasonable defaults, easily customizable to fit your needs. Modify the settings in `~/.hard/.env` to suit your preferences.
 
 - `WWW_PATH`: The directory where your projects are located. Default: `~/hard`
-
   - Any project you create or clone in this directory can be accessed on `*.localhost`.
   - Example: After running `hard laravel new awesome-project`, simply open [http://awesome-project.localhost](http://awesome-project.localhost) and it’ll be ready to go!
-
+  
 - `QUEUE_COMMAND`: Command to run your application queues. Default: `queue:work`
-
   - Can be changed to `queue:work --tries=3`, for example.
   - If you prefer to run Horizon, you can change it to `horizon`.
 
-- `DB_CONNECTION`: The type of database to use. Default: `mariadb`
-
-  - Can be changed to `pgsql` if you prefer to use PostgreSQL.
-  - Currently, `Hard` supports both MariaDB and PostgreSQL.
-
 - `DB_USERNAME`: Database user. Default: `root`
-
 - `DB_PASSWORD`: Database password. Default: `password`
-
 - `AWS_ACCESS_KEY_ID`: Minio user. Default: `root`
-
 - `AWS_SECRET_ACCESS_KEY`: Minio password. Default: `password`
 
 ---
@@ -139,6 +129,16 @@ Execute Node.js commands within the container:
 
 - `hard [project] node ...`: Run any Node.js command.
   - Example: `hard awesome-project node --version` to check the Node.js version.
+
+For the Vite dev server, be sure to add the proper server config in `vite.config.js`.
+Ports 5173 to 5180 are available, so you can run multiple instances of the Vite dev server:
+
+```javascript
+server: {
+    host: '0.0.0.0',
+    hmr: { host: '127.0.0.1' },
+},
+```
 
 ---
 

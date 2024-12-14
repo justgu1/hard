@@ -14,7 +14,7 @@ services:
       - "80:80"
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
-      - "${WWW_PATH}:/var/www/html"
+      - "${WWW_PATH}:/var/www"
     depends_on:
       - app
       - mariadb
@@ -36,9 +36,11 @@ services:
         GID: ${USER_ID}
       context: .
       dockerfile: ./docker/php-fpm/Dockerfile
+    ports:
+      - "5173-5180:5173-5180"
     volumes:
       - ./docker/php-fpm/php.ini:/usr/local/etc/php/php.ini
-      - "${WWW_PATH}:/var/www/html"
+      - "${WWW_PATH}:/var/www"
     depends_on:
       - mariadb
       - redis
@@ -52,7 +54,7 @@ services:
     container_name: queue
     restart: unless-stopped
     volumes:
-      - "${WWW_PATH}:/var/www/html"
+      - "${WWW_PATH}:/var/www"
     depends_on:
       - mariadb
       - redis
@@ -61,14 +63,16 @@ services:
     networks:
       - hard
     command: |
-      bash -c "sleep 5; ls | parallel --line-buffer 'php {}/artisan "${QUEUE_COMMAND}" >> /var/www/html/{}/storage/logs/queue-$(date +%F).log'"
+      bash -c "sleep 5; ls | parallel --line-buffer '
+        php {}/artisan "${QUEUE_COMMAND}" >> /var/www/{}/storage/logs/queue-$(date +%F).log
+      '"
 
   scheduler:
     image: app
     container_name: scheduler
     restart: unless-stopped
     volumes:
-      - "${WWW_PATH}:/var/www/html"
+      - "${WWW_PATH}:/var/www"
     depends_on:
       - mariadb
       - redis

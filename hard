@@ -126,30 +126,19 @@ if [ $YES = 1 ]; then
 fi
 
 # Check if the command going to run in the app container with a project...
-# case when the project is the current directory, there is no need to pass the project name
+# Case when the project is the current directory, there is no need to pass the project name
 # as an argument. In this case, the project name is the current directory name.
 # Example: hard php artisan migrate
-if [ "$1" != "" ] && [ -d $WWW_PATH/$(basename $PWD) ]; then
-    PROJECT="$(basename $PWD)"
-
-    # Commands thar are currently supported
-    case "$1" in
-        php|composer|npm|npx|yarn) YES=1;;
-        *)            YES=0;;
-    esac
-
-    if [ $YES = 1 ]; then
-        "${DOCKER_COMPOSE[@]}" exec -it --workdir "/var/www/html/$PROJECT" app "$@"
-        exit 0
-    fi
-fi
-
 # Case when the project is not the current directory,
 # the project name must be passed as an argument.
 # Example: hard awesome-project php artisan migrate
-if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
-    PROJECT="$1"
-    shift 1
+if [ "$1" != "" ] && [ -d $WWW_PATH/$(basename $PWD) ] || [ -d $WWW_PATH/"$1" ]; then
+    if [ -d $WWW_PATH/"$1" ]; then
+        PROJECT="$1"
+        shift 1
+    else
+        PROJECT="$(basename $PWD)"
+    fi
 
     # Commands thar are currently supported
     case "$1" in
@@ -158,7 +147,7 @@ if [ "$1" != "" ] && [ -d $WWW_PATH/"$1" ]; then
     esac
 
     if [ $YES = 1 ]; then
-        "${DOCKER_COMPOSE[@]}" exec -it --workdir "/var/www/html/$PROJECT" app "$@"
+        "${DOCKER_COMPOSE[@]}" exec -it --workdir "/var/www/$PROJECT" app "$@"
         exit 0
     fi
 fi
