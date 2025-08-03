@@ -1,25 +1,72 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
-echo "Installing Hard..."
+echo "Installing HARD CLI..."
 
-# check if git is installed
+# reusable yes/no prompt
+confirm() {
+    read -p "$1 (y/N): " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+# check git
 if ! command -v git >/dev/null; then
-  echo "Git is not installed. Please, install git and try again."
-  exit 1
+    echo "Git is not installed."
+    if confirm "Would you like to install Git now?"; then
+        if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            sudo apt update && sudo apt install git -y
+        elif [[ "$OSTYPE" == "darwin"* ]]; then
+            brew install git
+        else
+            echo "Your OS is not supported for automatic Git installation."
+            exit 1
+        fi
+    else
+        echo "Installation cancelled. Git is required."
+        exit 1
+    fi
 fi
 
-# check if docker is installed
+# install docker if not present
 if ! command -v docker >/dev/null; then
-  echo "Docker is not installed. Please, install docker and try again."
-  exit 1
+    echo "Docker is not installed."
+    if confirm "Would you like to install Docker now?"; then
+        if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            curl -fsSL https://get.docker.com -o get-docker.sh
+            sudo sh get-docker.sh
+            rm get-docker.sh
+            sudo usermod -aG docker $USER
+            echo "Docker installed successfully. You may need to restart your session for permissions to take effect."
+        else
+            echo "Automatic Docker installation not supported for this OS. Please install manually: https://docs.docker.com/get-docker/"
+            exit 1
+        fi
+    else
+        echo "Installation cancelled. Docker is required."
+        exit 1
+    fi
 fi
 
-# check if docker-compose or docker compose is installed
-if ! command -v docker-compose >/dev/null; then
-  if ! command -v docker compose >/dev/null; then
-    echo "Docker Compose is not installed. Please, install docker-compose and try again."
-    exit 1
-  fi
+# install docker compose if not present
+if ! command -v docker-compose >/dev/null && ! command -v docker compose >/dev/null; then
+    echo "Docker Compose is not installed."
+    if confirm "Would you like to install Docker Compose now?"; then
+        if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
+                -o /usr/local/bin/docker-compose
+            sudo chmod +x /usr/local/bin/docker-compose
+            ln -s /usr/local/bin/docker-compose ~/.local/bin/docker-compose 2>/dev/null || true
+            echo "Docker Compose installed successfully."
+        else
+            echo "Automatic Docker Compose installation not supported for this OS. Please install manually: https://docs.docker.com/compose/install/"
+            exit 1
+        fi
+    else
+        echo "Installation cancelled. Docker Compose is required."
+        exit 1
+    fi
 fi
 
 # set HARD_PATH
@@ -33,7 +80,6 @@ else
   # clone hard repository
   git clone https://github.com/clebsonsh/hard.git $HARD_PATH
 fi
-
 
 # copy .env.example to .env if .env 
 cp --update=none $HARD_PATH/.env.example $HARD_PATH/.env
@@ -84,10 +130,10 @@ if [ -f ~/.local/bin/hard ]; then
 fi
 
 # create a symbolic link to hard.sh
-ln -s -f -t ~/.local/bin $HARD_PATH/hard
+ln -s -f -t ~/.local/bin $HARD_PATH/core/hard
 
 # give permission
-chmod +x $HARD_PATH/hard
+chmod +x $HARD_PATH/core/hard
 
 echo "Hard installed successfully!"
 echo "Please, restart your terminal."
